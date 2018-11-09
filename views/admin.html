@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>多人博客 - 首页</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/index.css">
+</head>
+
+<body>
+    <div class="bk_header">
+        <div class="bk_logo pull-left">
+            <img class="logo" src="public/img/logo.png" alt="">
+            <img class="search" src="public/img/search.png" alt="">
+            <form action="">
+                <input type="search" placeholder="请输入">
+            </form>
+        </div>
+        <div class="bk_nav pull-right">
+            <ul class="nav nav-pills">
+                <li><a href="/">首页</a></li>
+                {{if user}}
+                <li class="dropdown active">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">关于<span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-right" id="myTabDrop1-contents">
+                        <li>
+                            <a href="javascript:;">当前登录用户：{{user.nickname}}</a>
+                        </li>
+                        <li><a href="">个人主页</a></li>
+                        <li class="active"><a href="/profile">设置</a></li>
+                        <li><a href="/quit">退出</a></li>
+                    </ul>
+                </li>
+                <li><a href="/new">发起</a></li>
+                {{else}}
+                <li><a href="/login">登录</a></li>
+                <li><a href="/register">注册</a></li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+    <section class="container mg_top">
+        <div class="col-md-3 list-group">
+            <a href="#" class="list-group-item disabled">用户设置</a>
+            <a href="/profile" class="list-group-item">基本信息</a>
+            <a href="/admin" class="list-group-item active">账户设置</a>
+        </div>
+        <div class="col-md-5">
+            <div class="subhead">
+                <h2>修改密码</h2>
+            </div>
+            <hr>
+            <form>
+                <div class="form-group">
+                    <label>当前密码</label>
+                    <input type="password" class="form-control input1" value="{{user.password}}" name="password">
+                </div>
+                <div class="form-group">
+                    <label>新的密码</label>
+                    <input type="password" class="form-control input2" name="newPassword">
+                </div>
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input type="password" class="form-control input3" name="confirmPassword">
+                </div>
+                <button type="submit" class="btn btn-success">保存</button>
+            </form>
+            <div class="subhead">
+                <h2>注销账号</h2>
+                <hr>
+            </div>
+            <div>
+                <p>一旦注销，不可找回，请谨慎操作</p>
+                <button class="btn btn-danger">删除</button>
+            </div>
+            <hr>
+        </div>
+    </section>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+    $(function() {
+        $('[type="submit"]').on('click', function(e) {
+            e.preventDefault()
+            var password = $('.input1').val()
+            var newPassword = $('.input2').val()
+            var confirmPassword = $('.input3').val()
+            if (!newPassword || !confirmPassword) {
+                window.alert('请输入新密码')
+            }
+            if (newPassword == password) {
+                window.alert('请输入与原密码不同的新密码')
+            }
+            if (confirmPassword != newPassword) {
+                window.alert('请确保与新密码相同')
+            }
+            var formData = $('form').serialize()
+
+            $.ajax({
+                url: '/admin',
+                type: 'post',
+                dataType: 'json',
+                data: formData,
+                success: function(data) {
+                    if (data.err_code == 500) {
+                        window.alert('data.message')
+                    } else if (data.err_code == 1) {
+                        window.alert('修改密码成功')
+                        window.location.href = '/'
+                    }
+                }
+            })
+        })
+
+        $('.bk_nav').on('click', 'li', function() {
+            $(this).addClass('active').siblings().removeClass('active')
+        })
+    })
+    </script>
+</body>
+
+</html>

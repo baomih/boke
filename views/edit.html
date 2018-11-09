@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>多人博客 - 首页</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/index.css">
+</head>
+<style>
+.con {
+    background: #fff;
+    padding: 5px 20px 20px;
+    border-radius: 5px;
+}
+
+.con h3 {
+    font-weight: bold;
+}
+
+.con p {
+    color: #838383;
+}
+</style>
+
+<body>
+    <div class="bk_header">
+        <div class="bk_logo pull-left">
+            <img class="logo" src="public/img/logo.png" alt="">
+            <img class="search" src="public/img/search.png" alt="">
+            <form action="">
+                <input type="search" placeholder="请输入">
+            </form>
+        </div>
+        <div class="bk_nav pull-right">
+            <ul class="nav nav-pills">
+                <li><a href="/">首页</a></li>
+                {{if user}}
+                <li class="dropdown">
+                    <a href="/topic/new" class="dropdown-toggle" data-toggle="dropdown">关于<span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-right" id="myTabDrop1-contents">
+                        <li>
+                            <a href="#dropdown1">当前登录用户：{{user.nickname}}</a>
+                        </li>
+                        <li><a href="#dropdown2">个人主页</a></li>
+                        <li><a href="/profile">设置</a></li>
+                        <li><a href="/quit">退出</a></li>
+                    </ul>
+                </li>
+                <li><a href="/new">发起</a></li>
+                {{else}}
+                <li><a href="/login">登录</a></li>
+                <li><a href="/register">注册</a></li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+    <section class="container mg_top">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="con">
+                    <h3 class="mg_top">{{topic.title}}</h3>
+                    <p> 发布于 1 年前 作者 a69694510 1992 次浏览 来自 问答</p>
+                    <div>{{topic.content}}</div>
+                </div>
+                <form>
+                    <div class="form-group mg_top">
+                        <label for="exampleInputPassword1">添加回复</label>
+                        <textarea class="form-control" name="" id="" cols="10" rows="10"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">回复</button>
+                </form>
+            </div>
+            <div class="col-md-3 hidden-sm hidden-xs second"></div>
+        </div>
+    </section>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+    $(function() {
+        $('.bk_nav').on('click', 'li', function() {
+            $(this).addClass('active').siblings().removeClass('active')
+        })
+        $('.bk_nav').on('mousemove', '.dropdown-menu li', function() {
+            $(this).addClass('active').siblings().removeClass('active')
+        })
+    })
+    </script>
+</body>
+
+</html>

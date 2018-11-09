@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>多人博客 - 首页</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/index.css">
+</head>
+
+<body>
+    <div class="bk_header">
+        <div class="bk_logo pull-left">
+            <img class="logo" src="public/img/logo.png" alt="">
+            <img class="search" src="public/img/search.png" alt="">
+            <form action="">
+                <input type="search" placeholder="请输入">
+            </form>
+        </div>
+        <div class="bk_nav pull-right">
+            <ul class="nav nav-pills">
+                <li><a href="/">首页</a></li>
+                {{if user}}
+                <li class="dropdown">
+                    <a href="/new" class="dropdown-toggle" data-toggle="dropdown">关于<span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-right" id="myTabDrop1-contents">
+                        <li>
+                            <a href="#dropdown1">当前登录用户：{{user.nickname}}</a>
+                        </li>
+                        <li><a href="/">个人主页</a></li>
+                        <li><a href="/profile">设置</a></li>
+                        <li><a href="/quit">退出</a></li>
+                    </ul>
+                </li>
+                <li class="active"><a href="/topic/new">发起</a></li>
+                {{else}}
+                <li><a href="/login">登录</a></li>
+                <li><a href="/register">注册</a></li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+    <section class="container mg_top">
+        <div class="row">
+            <div class="col-md-5">
+                <form action="/topic/new" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">选择板块</label>
+                        <select class="form-control" name="model">
+                            <option value="0">分享</option>
+                            <option value="1">问答</option>
+                            <option value="2">招聘</option>
+                            <option value="3">客户端测试</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">标题</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">内容</label>
+                        <textarea class="form-control" rows="3" name="content"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+    $(function() {
+        $('[type="submit"]').on('click', function(e) {
+            e.preventDefault()
+            var formData = $('form').serialize()
+            $.ajax({
+                url: '/new',
+                type: 'post',
+                dataType: 'json',
+                data: formData,
+                success: function(data) {
+                    if (data.err_code == 500) {
+                        window.alert('data.message')
+                    } else if (data.err_code == 1) {
+                        window.alert('发表成功')
+                        window.location.href = '/'
+                    }
+                }
+            })
+        })
+
+    })
+    </script>
+</body>
+
+</html>

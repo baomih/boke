@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/index.css">
+</head>
+
+<body>
+    <div class="bk_header">
+        <div class="bk_logo pull-left">
+            <img class="logo" src="public/img/logo.png" alt="">
+            <img class="search" src="public/img/search.png" alt="">
+            <form action="">
+                <input type="search" placeholder="请输入">
+            </form>
+        </div>
+        <div class="bk_nav pull-right">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="/">首页</a></li>
+                {{if user}}
+                <li class="dropdown">
+                    <a href="/topic/new" class="dropdown-toggle" data-toggle="dropdown">关于<span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-right" id="myTabDrop1-contents">
+                        <li>
+                            <a href="#dropdown1">当前登录用户：{{user.nickname}}</a>
+                        </li>
+                        <li><a href="#dropdown2">个人主页</a></li>
+                        <li><a href="/profile">设置</a></li>
+                        <li><a href="/quit">退出</a></li>
+                    </ul>
+                </li>
+                <li><a href="/new">发起</a></li>
+                {{else}}
+                <li><a href="/login">登录</a></li>
+                <li><a href="/register">注册</a></li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="rows">
+            <div class="col-md-9 first">
+                <ul class="media-list">
+                    {{each topic}}
+                    <li class="media">
+                        <div class="media-left pd_top">
+                            <a href="#">
+                                <img width="40" height="40" class="media-object" src="{{$value.author_avatar}}" alt="...">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="javascript:;">{{$value.title}}</a></h4>
+                            <a class="content" href="/edit?title={{$value.title}}">{{$value.content}}</a>
+                            <p>sueysok 回复了问题 • 2 人关注 • 1 个回复 • 187 次浏览 •{{$value.last_modified_time}}</p>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="col-md-3 hidden-sm hidden-xs second"></div>
+        </div>
+    </div>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+    $(function() {
+        $('.bk_nav').on('click', 'li', function() {
+            $(this).addClass('active').siblings().removeClass('active')
+        })
+        $('.bk_nav').on('mousemove', '.dropdown-menu li', function() {
+            $(this).addClass('active').siblings().removeClass('active')
+        })
+    })
+    </script>
+</body>
+
+</html>
